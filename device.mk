@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/xiaomi/taoyao
+LOCAL_PATH := device/xiaomi/mona
 
 # Enable updating of APEXes
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
@@ -73,12 +73,12 @@ PRODUCT_PACKAGES += \
     update_verifier \
     update_engine_sideload
 
-#  Health
+# Health
 PRODUCT_PACKAGES += \
     android.hardware.health@2.1-impl.recovery \
     android.hardware.health@2.1-service
 
-# fastbootd
+# Fastbootd
 PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.0-impl-mock \
     fastbootd
@@ -98,8 +98,7 @@ VENDOR_SECURITY_PATCH := 2099-12-31
 PLATFORM_VERSION := 99.87.36
 PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 BOARD_USES_QCOM_FBE_DECRYPTION := true
-
-TW_LOAD_VENDOR_MODULES := "goodix_core.ko adsp_loader_dlkm.ko qti_battery_charger_main_odin.ko xiaomi_touch.ko focaltech_touch.ko"
+TW_USE_FSCRYPT_POLICY := 2
 
 # Vibrator
 TW_SUPPORT_INPUT_AIDL_HAPTICS := true
@@ -123,6 +122,9 @@ PRODUCT_PACKAGES += \
     qcom_decrypt \
     qcom_decrypt_fbe
 
-#Properties
+# Properties
 TW_OVERRIDE_SYSTEM_PROPS := \
     "ro.build.date.utc;ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental"
+    
+# Kernel module loading
+TW_LOAD_VENDOR_MODULES := $(shell echo \"$(shell ls $(DEVICE_PATH)/prebuilt/modules)\")
